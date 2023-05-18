@@ -1,0 +1,24 @@
+using System;
+using System.IO;
+using System.Xml.Linq;
+
+namespace UpdateXMLFile
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Load the XML file
+            XDocument doc = XDocument.Load("data.xml");
+
+            // Find the element to update
+            XElement element = doc.Descendants("item").Where(item => item.Attribute("itemID").Value == "1").Single();
+
+            // Update the element value
+            element.SetAttributeValue("name", "New Name");
+
+            // Save the XML file
+            doc.Save("data.xml");
+        }
+    }
+}
