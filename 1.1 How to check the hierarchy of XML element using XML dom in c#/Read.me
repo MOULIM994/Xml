@@ -1,0 +1,27 @@
+using System;
+using System.Xml;
+
+namespace Example
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create an instance of the XmlDocument class.
+            XmlDocument document = new XmlDocument();
+
+            // Load the XML document into the XmlDocument object.
+            document.Load("books.xml");
+
+            // Get a collection of all the elements with the tag name "book".
+            XmlNodeList bookElements = document.GetElementsByTagName("book");
+
+            // Iterate through the collection of elements and print the name of the element and the name of its parent element.
+            foreach (XmlNode bookElement in bookElements)
+            {
+                Console.WriteLine("Book element: {0}", bookElement.Name);
+                Console.WriteLine("Parent element: {0}", bookElement.ParentNode.Name);
+            }
+        }
+    }
+}
