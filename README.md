@@ -1,73 +1,80 @@
-# Xml
-/*No, Program.cs and Startup.cs are not the same. 
-
-Program.cs is the entry point for your application and contains the Main method that starts your application. It is responsible for setting up the host and configuring the environment.
-
-Startup.cs is where you configure your application's services and middleware. It is responsible for setting up the request pipeline and configuring any middleware that your application needs.
-
-You should create a separate Startup.cs file to configure your application's services and middleware. Here is an example of what your Startup.cs file might look like:
-
-csharp
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace MyApplication
+// Startup.cs
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public IConfiguration Configuration { get; }
+        Configuration = configuration;
+    }
 
-        public Startup(IConfiguration configuration)
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers();
+        services.AddXmlSerializerFormatter();
+
+        // Register the XML service
+        services.AddScoped<IXmlService, XmlService>();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            Configuration = configuration;
+            app.UseDeveloperExceptionPage();
         }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Add services here
-            services.AddMvc();
-        }
+        app.UseRouting();
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        app.UseEndpoints(endpoints =>
         {
-            // Configure middleware here
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+            endpoints.MapControllers();
+        });
     }
 }
 
-
-In this example, we are adding the MVC service to our application's services in the ConfigureServices method. In the Configure method, we are configuring our application's middleware to use routing and map controllers to endpoints.
-
-To use this Startup class in your application, you need to update your Program.cs file to use it:
-
-csharp
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-
-namespace MyApplication
+// Program.cs
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        var host = new WebHostBuilder()
+            .UseStartup<Startup>()
+            .Build();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        host.Run();
     }
 }
 
+// XmlService.cs
+public class XmlService : IXmlService
+{
+    public XmlDocument Parse(string xml)
+    {
+        return XDocument.Parse(xml);
+    }
+}
 
-In this example, we are using the UseStartup method to tell the host to use our Startup class to configure our application's services and middleware.*/
+// Controller.cs
+public class HomeController : Controller
+{
+    private readonly IXmlService _xmlService;
+
+    public HomeController(IXmlService xmlService)
+    {
+        _xmlService = xmlService;
+    }
+
+    [HttpGet]
+    public ActionResult Get()
+    {
+        // Get the XML input from the request
+        var xmlInput = Request.Body;
+
+        // Parse the XML input
+        var xmlDocument = _xmlService.Parse(xmlInput);
+
+        // Return the XML document as the response
+        return new XmlResult(xmlDocument);
+    }
+}
