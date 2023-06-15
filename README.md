@@ -33,7 +33,7 @@ namespace YourProjectName.Formatters
 
             using var reader = new StreamReader(context.HttpContext.Request.Body, encoding);
             var xmlSerializer = new XmlSerializer(context.ModelType);
-            var result = xmlSerializer.Deserialize(await reader.ReadToEndAsync());
+            var result = xmlSerializer.Deserialize(reader);
 
             return await InputFormatterResult.SuccessAsync(result);
         }
