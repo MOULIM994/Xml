@@ -1,1 +1,30 @@
-https://chat.openai.com/share/977e3337-3a5e-407f-9e6d-e1a5c94cbbb0
+using System;
+using System.Linq;
+using System.Xml.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        // Load the XML document
+        XDocument xmlDoc = XDocument.Load("example.xml");
+
+        // Get the parent element to remove
+        XElement parentElement = xmlDoc.Descendants("parent").FirstOrDefault();
+
+        // Get the parent's children
+        var children = parentElement.Elements();
+
+        // Move the children to the parent's position
+        XElement parentContainer = parentElement.Parent;
+        parentContainer.Add(children);
+
+        // Remove the parent element
+        parentElement.Remove();
+
+        // Save the modified XML document
+        xmlDoc.Save("modified.xml");
+
+        Console.WriteLine("Parent element removed while keeping the child elements intact.");
+    }
+}
