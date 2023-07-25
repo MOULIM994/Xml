@@ -1,1 +1,1 @@
-https://docs.google.com/document/d/1ugqzo_57L3hGZ6hwNJUrutHS297cWIRy3yxyoie0tRQ/edit?usp=sharing
+https://chat.openai.com/share/e1536cbc-5043-4b7b-817d-0f4d321cfd04
