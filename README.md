@@ -1,1 +1,1 @@
-https://chat.openai.com/share/03c74cc9-b8bf-4972-a8b1-e510c8228940
+I am creating an outlook automation using vsto addins I need a feature like consider I am opening outlook and clicking/selecting an mail now if I click reply button the message id of original mail item should be in/displayed in the body of reply mail
