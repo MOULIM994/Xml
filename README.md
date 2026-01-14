@@ -1,1 +1,2 @@
 I am creating an outlook automation using vsto addins I need a feature like consider I am opening outlook and clicking/selecting an mail now if I click reply button the message id of original mail item should be in/displayed in the body of reply mail
+https://drive.google.com/file/d/1k2Sv6DDwSK5xiOA5KRK8-DJxBQvwhu3w/view?usp=drivesdk
